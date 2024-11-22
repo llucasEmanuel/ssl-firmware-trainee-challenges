@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+message protoSpeedSSL{
+    double vx = 1;
+    double vy = 2;
+    double vw  = 3;
+    bool front  = 4;
+    bool chip  = 5;
+    bool charge  = 6;
+    double kickStrength = 7 ;
+    bool dribbler = 8;
+    double dribSpeed = 9;
+};
+
+message protoOdometrySSL{
+    double x = 1;
+    double y = 2;
+    double w = 3;
+    bool hasBall = 4;
+    double kickLoad = 5;
+    double battery = 6;
+    int32 count = 7;
+    double vision_x = 8;
+    double vision_y = 9;
+    double vision_w = 10;
+    double vx = 11;
+    double vy = 12;
+    double vw = 13;
+};
+
+message protoPositionSSL{
+    double x = 1;
+    double y = 2;
+    double w = 3;
+    enum PosType{
+        unknown = 0;
+        source = 1;
+        stop = 2;
+        driveToTarget = 3;
+        rotateOnSelf = 4;
+        rotateInPoint = 5;
+    }
+    PosType posType = 4;
+    bool front  = 5;
+    bool chip  = 6;
+    bool charge  = 7;
+    double kickStrength = 8 ;
+    bool dribbler = 9;
+    double dribSpeed = 10;
+    bool resetOdometry = 11;
+    double min_speed = 12;
+    double max_speed = 13;
+};
+
+message protoMotorsPWMSSL{
+    double m1 = 1;
+    double m2 = 2;
+    double m3 = 3;
+    double m4 = 4;
+}
+
+message protoMotorsDataSSL{
+    double current_m1 = 1;
+    double current_m2 = 2;
+    double current_m3 = 3;
+    double current_m4 = 4;
+    double pwm_m1 = 5;
+    double pwm_m2 = 6;
+    double pwm_m3 = 7;
+    double pwm_m4 = 8;
+    double desired_m1 = 9;
+    double desired_m2 = 10;
+    double desired_m3 = 11;
+    double desired_m4 = 12;
+    double msgTime = 13;
+}
