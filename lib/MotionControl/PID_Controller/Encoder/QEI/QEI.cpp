@@ -14,8 +14,34 @@ void QEI::init(void) {
 }
 
 void QEI::frequency(void) {
-  // Motor spin frequency in Hz
-  frequency_ = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
+  // Reads the new frequency value in Hz
+  double newFrequency = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
+  // Inserts the new frequency value in the front of the buffer
+  signalBuffer_.insert(signalBuffer_.begin(), newFrequency);
+  // Removes the last element of the buffer
+  signalBuffer_.pop_back();
+
+  /* Applying filter */
+  const int kernelSize = 5;//filter size
+  //Gaussian wheighs for the filter
+  const double Kernel[kernelSize] = {0.06, 0.24, 0.40, 0.24, 0.06};
+
+  double filteredFrequency = 0.0;
+
+  //Assure that the buffer is ready to be filtered
+  if(signalBuffer_.size()>= kernelSize){
+    for(int i=0; i<kernelSize; i++){
+      filteredFrequency += signalBuffer_[i] * Kernel[i];
+    }
+  }
+  //If there's not enough data, the filtered frequency is the current frequency
+  else{
+    filteredFrequency=newFrequency;
+  }
+  
+
+  // Filtered motor spin frequency in Hz
+  // frequency_ = /* Filtered frequency */ ;
   this->resetPulses();
 }
 
