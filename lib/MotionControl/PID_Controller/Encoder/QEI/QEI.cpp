@@ -19,19 +19,11 @@ void QEI::frequency(void) {
   
   // Stablishing the smoothing factor 
   double alpha = 0.25; 
-  
-  // Initializes without filtering in the first sample
-  if (first_run){
-		first_filtered_frequency = new_frequency;  
-		frequency_ = new_frequency;
-		first_run = false;
-		
-  } else { // Applying the Exponencial Filter (two times)
-	  first_filtered_frequency = alpha * new_frequency + (1 - alpha) * first_filtered_frequency;
-	  frequency_ = alpha * first_filtered_frequency + (1 - alpha) * frequency_;
+  	
+  // Applying the Exponencial Filter (two times)
+  first_filtered_frequency = alpha * new_frequency + (1 - alpha) * first_filtered_frequency;
+  frequency_ = alpha * first_filtered_frequency + (1 - alpha) * frequency_;
 	  
-  }
-  
   this->resetPulses();
 }
 
