@@ -15,7 +15,23 @@ void QEI::init(void) {
 
 void QEI::frequency(void) {
   // Motor spin frequency in Hz
-  frequency_ = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
+  double new_frequency = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
+  
+  // Stablishing the smoothing factor 
+  double alpha = 0.25; 
+  
+  // Initializes without filtering in the first sample
+  if (first_run){
+		first_filtered_frequency = new_frequency;  
+		frequency_ = new_frequency;
+		first_run = false;
+		
+  } else { // Applying the Exponencial Filter (two times)
+	  first_filtered_frequency = alpha * new_frequency + (1 - alpha) * first_filtered_frequency;
+	  frequency_ = alpha * first_filtered_frequency + (1 - alpha) * frequency_;
+	  
+  }
+  
   this->resetPulses();
 }
 
