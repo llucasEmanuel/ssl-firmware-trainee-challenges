@@ -38,10 +38,21 @@ void QEI::frequency(void) {
   else{
     filteredFrequency=newFrequency;
   }
+
+   // Apply the filter a second time
+   double secondFilteredFrequency = 0.0;
+   if (signalBuffer_.size() >= kernelSize){
+     for (int i = 0; i < kernelSize; i++){
+       secondFilteredFrequency += signalBuffer_[i] * Kernel[i];
+      }
+    } 
+   else{
+     secondFilteredFrequency = filteredFrequency;
+    }
   
 
   // Filtered motor spin frequency in Hz
-  // frequency_ = /* Filtered frequency */ ;
+  frequency_ = secondFilteredFrequency;
   this->resetPulses();
 }
 

@@ -25,7 +25,7 @@
  #define PULSES_RESET 32767
  
  /* signalBuffer_ size */
- #define BUFFER_SIZE 10
+ #define BUFFER_SIZE 5
  
  /**
   * Quadrature Encoder Interface.
