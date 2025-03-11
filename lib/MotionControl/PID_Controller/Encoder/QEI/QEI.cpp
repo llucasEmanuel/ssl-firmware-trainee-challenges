@@ -18,18 +18,19 @@ void QEI::init(void) {
 void QEI::frequency(void) {
   // Reads the new frequency value in Hz
   double newFrequency = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
-  // Inserts the new frequency value in the front of the buffer
-  signalBuffer_.insert(signalBuffer_.begin(), newFrequency);
-  // Removes the last element of the buffer
-  signalBuffer_.pop_back();
 
   /* Applying the Exponential Filter */
   const double alpha = 0.25;
-  firstFilteredFrequency = alpha * newFrequency + (1 - alpha) * firstFilteredFrequency;
+  firstFilteredFrequency_ = alpha * newFrequency + (1 - alpha) * firstFilteredFrequency_;
 
   /* Applying the Gaussian Filter */
-  const int kernelSize = 5; // filter size
-
+  
+  // Inserts the first filtered frequency value in the front of the buffer
+  signalBuffer_.insert(signalBuffer_.begin(), firstFilteredFrequency_);
+  // Removes the last element of the buffer
+  signalBuffer_.pop_back();
+  // filter size
+  const int kernelSize = 5; 
   // Gaussian wheighs for the filter
   const double Kernel[kernelSize] = {0.06, 0.24, 0.40, 0.24, 0.06};
 
