@@ -74,6 +74,10 @@ void PID_Controller::update() {
 void PID_Controller::updateDesiredSpeed(double desired_rad_s) {
   if (!motor_error) {
     _stopControl = false;
+    // Every time a desired speed variation happens
+    if (_desired_rad_s != desired_rad_s) {
+      desired_speed_changed_ = true;
+    }
     _desired_rad_s = desired_rad_s;
     _controlTimeout.reset();
     debug_if(DEBUG,
