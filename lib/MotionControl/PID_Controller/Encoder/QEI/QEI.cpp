@@ -5,6 +5,8 @@ QEI::QEI(int pulsesPerRev, int tsample, TIM_TypeDef* timer) {
   pulsesPerRev_ = pulsesPerRev;
   tsample_ = tsample;
   timer_ = timer;
+
+  signalBuffer_.assign(BUFFER_SIZE, 0.0);
 }
 
 void QEI::init(void) {
@@ -15,6 +17,7 @@ void QEI::init(void) {
 
 void QEI::frequency(void) {
   // Reads the new frequency value in Hz
+
   double newFrequency = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
   // Inserts the new frequency value in the front of the buffer
   signalBuffer_.insert(signalBuffer_.begin(), newFrequency);
@@ -23,7 +26,7 @@ void QEI::frequency(void) {
 
   /* Applying filter */
   const int kernelSize = 5;//filter size
-  //Gaussian wheighs for the filter
+  //Gaussian wheights for the filter
   const double Kernel[kernelSize] = {0.06, 0.24, 0.40, 0.24, 0.06};
 
   double filteredFrequency = 0.0;
