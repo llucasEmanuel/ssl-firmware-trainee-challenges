@@ -78,6 +78,9 @@ void PID_Controller::updateDesiredSpeed(double desired_rad_s) {
     if (_desired_rad_s != desired_rad_s) {
       desired_speed_changed_ = true;
     }
+    else {
+      desired_speed_changed_ = false;
+    }
     _desired_rad_s = desired_rad_s;
     _controlTimeout.reset();
     debug_if(DEBUG,
@@ -126,6 +129,9 @@ double PID_Controller::runPID(double desired_rad_s, MotorType M_TYPE) {
 }
 
 void PID_Controller::runPWM(double desired_pwm) {
+  if (desired_speed_changed_) {
+    desired_pwm = _desired_rad_s;
+  }
   _pwm = desired_pwm;
   motor.run(desired_pwm);
   _speed_rad_s = enc->getSpeed();

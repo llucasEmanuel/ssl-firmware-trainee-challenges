@@ -6,7 +6,7 @@ QEI::QEI(int pulsesPerRev, int tsample, TIM_TypeDef* timer) {
   tsample_ = tsample;
   timer_ = timer;
 
-  signalBuffer_.assign(BUFFER_SIZE, 0);
+  
 }
 
 void QEI::init(void) {
@@ -24,11 +24,12 @@ void QEI::frequency(void) {
   firstFilteredFrequency_ = alpha * newFrequency + (1 - alpha) * firstFilteredFrequency_;
 
   /* Applying the Gaussian Filter */
+  // Desloca elemtnos do buffer
+  for (int i = 0; i < BUFFER_SIZE - 1; i++) {
+    signalBuffer_[i + 1] = signalBuffer_[i];
+  }
+  signalBuffer_[0] = newFrequency;
   
-  // Inserts the first filtered frequency value in the front of the buffer
-  signalBuffer_.insert(signalBuffer_.begin(), firstFilteredFrequency_);
-  // Removes the last element of the buffer
-  signalBuffer_.pop_back();
   // filter size
   const int kernelSize = 5; 
   // Gaussian weights for the filter

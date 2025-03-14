@@ -20,7 +20,7 @@
  #define QEI_H
  
  #include "Encoder.h"
- #include <vector>
+ 
  
  #define PULSES_RESET 32767
  
@@ -79,7 +79,7 @@
    int tsample_;
  
    /* Buffer that stores the most recent N frequency values from the encoder */
-   std::vector<double> signalBuffer_;
+   double signalBuffer_[BUFFER_SIZE] = {0, 0, 0, 0, 0};
  };
  
  #endif /* QEI_H */
