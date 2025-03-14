@@ -75,7 +75,7 @@
  
    volatile int pulses_;
    volatile double frequency_ = 0.0;
-   volatile double firstFilteredFrequency_ = 0.0;
+   double firstFilteredFrequency_ = 0.0;
    int tsample_;
  
    /* Buffer that stores the most recent N frequency values from the encoder */

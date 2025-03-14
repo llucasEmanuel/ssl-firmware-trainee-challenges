@@ -11,7 +11,7 @@
 #include <EthCommunication.h>
 #include <status.h>
 
-#define ROBOT_MODE (ExecMode::GAME_ON)
+#define ROBOT_MODE (ExecMode::TEST_PID)
 
 nRF24Communication radio_recv(NRF_R_MOSI,
                               NRF_R_MISO,

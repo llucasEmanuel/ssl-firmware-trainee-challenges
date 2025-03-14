@@ -108,6 +108,8 @@ class PID_Controller {
   double derivative_last_error = 0;
   double D = 0;
 
+  bool desired_speed_changed_ = false;
+
 #ifdef USING_NEW_MOTOR
   double Kp = 1.157;  // PID Control constants
   double Ki = 0.0549; // PID Control constants

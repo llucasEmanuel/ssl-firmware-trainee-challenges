@@ -31,7 +31,7 @@ void QEI::frequency(void) {
   signalBuffer_.pop_back();
   // filter size
   const int kernelSize = 5; 
-  // Gaussian wheighs for the filter
+  // Gaussian weights for the filter
   const double Kernel[kernelSize] = {0.06, 0.24, 0.40, 0.24, 0.06};
 
   double secondFilteredFrequency = 0.0;
