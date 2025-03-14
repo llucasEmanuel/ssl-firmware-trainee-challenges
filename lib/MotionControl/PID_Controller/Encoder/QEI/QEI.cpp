@@ -6,7 +6,6 @@ QEI::QEI(int pulsesPerRev, int tsample, TIM_TypeDef* timer) {
   tsample_ = tsample;
   timer_ = timer;
 
-  signalBuffer_.assign(BUFFER_SIZE, 0);
 }
 
 void QEI::init(void) {
@@ -20,15 +19,16 @@ void QEI::frequency(void) {
   double newFrequency = double((this->getPulses() * (1000.0 / tsample_)) / (4.0 * pulsesPerRev_));
 
   /* Applying the Exponential Filter */
-  const double alpha = 0.25;
+  const double alpha = 0.2;
   firstFilteredFrequency_ = alpha * newFrequency + (1 - alpha) * firstFilteredFrequency_;
 
   /* Applying the Gaussian Filter */
+  // Desloca elementos do buffer
+  for (int i = 0; i < BUFFER_SIZE - 1; i++) {
+    signalBuffer_[i + 1] = signalBuffer_[i];
+  }
+  signalBuffer_[0] = newFrequency;
   
-  // Inserts the first filtered frequency value in the front of the buffer
-  signalBuffer_.insert(signalBuffer_.begin(), firstFilteredFrequency_);
-  // Removes the last element of the buffer
-  signalBuffer_.pop_back();
   // filter size
   const int kernelSize = 5; 
   // Gaussian wheighs for the filter
@@ -36,16 +36,10 @@ void QEI::frequency(void) {
 
   double secondFilteredFrequency = 0.0;
  
-  // Assure that the buffer is ready to be filtered
-  //if(signalBuffer_.size()>= kernelSize){
     for(int i=0; i<kernelSize; i++){
       secondFilteredFrequency += signalBuffer_[i] * Kernel[i];
     }
-  //}
-  //If there's not enough data, the filtered frequency is the current frequency
-  //else{
-    //secondFilteredFrequency=newFrequency;
-  //}
+  
   // Filtered motor spin frequency in Hz
   frequency_ = secondFilteredFrequency;
   this->resetPulses();

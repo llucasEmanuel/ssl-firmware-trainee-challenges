@@ -277,7 +277,7 @@ void MotionControl::printDebugPID(Vector desired, bool debug) {
   Motors desiredSpeeds = _kinematics->convertToWheel(desired.x, desired.y, desired.w);
   if (debug) {
     printf(
-        "V1 %.3lf | V2 %.3lf | V3 %.3lf | V4 %.3lf || M1 %.3lf | M2 %.3lf | M3 %.3lf | M4 %.3lf\n",
+        "%.3lf,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf,%.3lf\n",
         desiredSpeeds.m1,
         desiredSpeeds.m2,
         desiredSpeeds.m3,
