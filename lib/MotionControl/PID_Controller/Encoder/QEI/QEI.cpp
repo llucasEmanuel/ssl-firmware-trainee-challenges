@@ -27,7 +27,7 @@ void QEI::frequency(void) {
   for (int i = 0; i < BUFFER_SIZE - 1; i++) {
     signalBuffer_[i + 1] = signalBuffer_[i];
   }
-  signalBuffer_[0] = newFrequency;
+  signalBuffer_[0] = firstFilteredFrequency_;
   
   // filter size
   const int kernelSize = 5; 
