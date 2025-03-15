@@ -5,7 +5,6 @@ QEI::QEI(int pulsesPerRev, int tsample, TIM_TypeDef* timer) {
   pulsesPerRev_ = pulsesPerRev;
   tsample_ = tsample;
   timer_ = timer;
-
 }
 
 void QEI::init(void) {
@@ -38,8 +37,8 @@ void QEI::frequency(void) {
       filteredFrequency += signalBuffer_[i] * Kernel[i];
     }
   
-  //If there's not enough data, the filtered frequency is the current frequency
-  
+  signalBuffer_[0] = filteredFrequency;
+
 
    // Apply the filter a second time
    double secondFilteredFrequency = 0.0;
@@ -48,12 +47,12 @@ void QEI::frequency(void) {
       secondFilteredFrequency += signalBuffer_[i] * Kernel[i];
     }
     
-  
-
   // Filtered motor spin frequency in Hz
-  frequency_ = newFrequency;
+  frequency_ = secondFilteredFrequency;
   this->resetPulses();
 }
+
+
 double QEI::getFrequency(void) {
   return frequency_;
 }
