@@ -20,6 +20,7 @@
  #define QEI_H
  
  #include "Encoder.h"
+
  
  #define PULSES_RESET 32767
  

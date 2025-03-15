@@ -54,7 +54,6 @@ void QEI::frequency(void) {
   frequency_ = newFrequency;
   this->resetPulses();
 }
-
 double QEI::getFrequency(void) {
   return frequency_;
 }
