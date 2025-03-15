@@ -70,7 +70,7 @@ class QEI : public Encoder {
   int pulsesPerRev_;
 
   volatile int pulses_;
-  double frequency_ = 0.0;
+  volatile double frequency_ = 0.0;
   volatile double first_filtered_frequency = 0.0;
   int tsample_;
 };
